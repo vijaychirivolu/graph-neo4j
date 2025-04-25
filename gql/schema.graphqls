@@ -1,0 +1,47 @@
+scalar UUID
+
+scalar DateTime
+
+extend schema @link(url: "https://specs.apollo.dev/federation/v2.7", import:["@key"])
+
+type ResourceID @key(fields: "id") {
+    id: UUID!
+}
+
+input CreateResourceEventInput {
+    resourceType: String!
+    eventType: String!
+    resourcePayload: String!
+}
+
+input CreateGenerateIDInput {
+    origin: String!
+}
+
+type Resource {
+    id: String!
+    type: String!
+    name: String
+    description: String
+    createdAt: DateTime!
+    updatedAt: DateTime
+
+}
+
+
+type ResourceEvent {
+    id: String
+    resourceId: String!
+    eventType: String!
+    timestamp: DateTime!
+    metadata: String
+}
+
+type Mutation {
+    generateResourceId(input: CreateGenerateIDInput!): ResourceID!
+    createResourceEvent(input: CreateResourceEventInput!): Boolean!
+}
+
+type Query {
+    ping: String
+}
